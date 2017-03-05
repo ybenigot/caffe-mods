@@ -14,6 +14,8 @@ namespace caffe {
 
 #define HDF5_DATA_DATASET_NAME "data"
 #define HDF5_DATA_LABEL_NAME "label"
+#define HDF5_DATA_ADD1_NAME "additional1"
+#define HDF5_DATA_ADD2_NAME "additional2"
 
 /**
  * @brief Write blobs to disk as HDF5 files.
@@ -35,8 +37,8 @@ class HDF5OutputLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top) {}
 
   virtual inline const char* type() const { return "HDF5Output"; }
-  // TODO: no limit on the number of blobs
-  virtual inline int ExactNumBottomBlobs() const { return 2; }
+  // from 2 to 4 blobs (previous ly 2 exactly)
+  virtual inline int ExactNumBottomBlobs() const { return -1; }
   virtual inline int ExactNumTopBlobs() const { return 0; }
 
   inline std::string file_name() const { return file_name_; }
@@ -57,6 +59,9 @@ class HDF5OutputLayer : public Layer<Dtype> {
   hid_t file_id_;
   Blob<Dtype> data_blob_;
   Blob<Dtype> label_blob_;
+  Blob<Dtype> additional1_blob_; // additional blob, use depends on layer context
+  Blob<Dtype> additional2_blob_; // additional blob, use depends on layer context
+  int blob_count; 
 };
 
 }  // namespace caffe
