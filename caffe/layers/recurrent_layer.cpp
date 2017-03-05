@@ -16,7 +16,7 @@ void RecurrentLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   CHECK_GE(bottom[0]->num_axes(), 2)
       << "bottom[0] must have at least 2 axes -- (#timesteps, #streams, ...)";
   T_ = bottom[0]->shape(0);
-  N_ = bottom[0]->shape(1);
+  N_ = bottom[0]->shape(0); LOG(INFO) << "Assuming N=T this limitation helps for predict mode"
   LOG(INFO) << "Initializing recurrent layer: assuming input batch contains "
             << T_ << " timesteps of " << N_ << " independent streams.";
 
